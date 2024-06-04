@@ -1,5 +1,5 @@
 add_executable(${PROJECT_NAME} "")
-target_sources(${PROJECT_NAME} PRIVATE "src/mod_sat_runner.cc")
+target_sources(${PROJECT_NAME} PRIVATE "src/skedai_sat_runner.cc")
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/src)
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_11)
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
@@ -15,11 +15,11 @@ elseif(UNIX)
   set_target_properties(${PROJECT_NAME} PROPERTIES
     INSTALL_RPATH "$ORIGIN/${libdir_relative_path}")
 endif()
-add_executable(ModSatRunner::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+add_executable(SkedaiSatRunner::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 # Test
 if(BUILD_TESTING)
-  add_test(NAME ModSatRunner_test COMMAND ModSatRunner)
+  add_test(NAME SkedaiSatRunner_test COMMAND SkedaiSatRunner)
 endif()
 
 # Install
