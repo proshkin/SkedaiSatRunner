@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.18)
 set(CMAKE_BUILD_TYPE "Release" CACHE STRING
   "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel.")
 
-project(ModSatRunner VERSION 1.0 LANGUAGES CXX)
+project(SkedaiSatRunner VERSION 1.0 LANGUAGES CXX)
 message(STATUS "${PROJECT_NAME} version: ${PROJECT_VERSION}")
 #message(STATUS "major: ${PROJECT_VERSION_MAJOR}")
 #message(STATUS "minor: ${PROJECT_VERSION_MINOR}")
@@ -100,7 +100,7 @@ set_property(GLOBAL PROPERTY CTEST_TARGETS_ADDED 1)
 include(CTest)
 include(GNUInstallDirs)
 
-add_subdirectory(ModSatRunner)
+add_subdirectory(SkedaiSatRunner)
 
 # Install
 install(EXPORT ${PROJECT_NAME}Targets
