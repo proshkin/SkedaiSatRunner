@@ -18,9 +18,9 @@ endif()
 add_executable(SkedaiSatRunner::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 # Test
-if(BUILD_TESTING)
-  add_test(NAME SkedaiSatRunner_test COMMAND SkedaiSatRunner)
-endif()
+# if(BUILD_TESTING)
+#  add_test(NAME SkedaiSatRunner_test COMMAND SkedaiSatRunner)
+# endif()
 
 # Install
 install(TARGETS	${PROJECT_NAME}

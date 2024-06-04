@@ -17,7 +17,8 @@ Github-CI:<br>
 
 # Introduction
 
-This is an integration test of ORTools in a Modern [CMake](https://cmake.org/)
+This is a Modified Google Or-Tools SatRunner 
+
 C++ Project using the [FetchContent](https://cmake.org/cmake/help/latest/module/FetchContent.html)
 module.
 
@@ -25,33 +26,11 @@ This project should run on Linux, Mac and Windows.
 
 # CMake Dependencies Tree
 
-This CMake project is composed of one executable (FooApp) and one library (Foo)
+This CMake project is composed of one executable SkedaiSatRunner 
 with the following dependencies:  
 ```
 ortools: PUBLIC ZLIB abseil-cpp Protobuf re2 Cbc SCIP
-Foo: PRIVATE ortools
-FooApp: PRIVATE ortools
-```
-
-## Project directory layout
-
-Thus the project layout is as follow:
-```
-<Method>
-├── CMakeLists.txt
-├── cmake
-│   └── utils.cmake
-├── Foo
-│   ├── CMakeLists.txt
-│   ├── include
-│   │   └── foo
-│   │       └── Foo.hpp
-│   └── src
-│       └── Foo.cpp
-└── FooApp
-    ├── CMakeLists.txt
-    └── src
-        └── main.cpp
+SkedaiSatRunner: PRIVATE ortools
 ```
 
 # C++ Project Build
@@ -68,5 +47,5 @@ Apache 2. See the LICENSE file for details.
 
 # Disclaimer
 
-This is not an official Google product, it is just code that happens to be
-owned by Google.
+This is AiI Tech Knowledge LLC project that was based on 
+https://github.com/or-tools/cmake_or-tools.git
