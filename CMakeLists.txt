@@ -5,6 +5,16 @@ set(CMAKE_BUILD_TYPE "Release" CACHE STRING
   "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel.")
 
 project(SkedaiSatRunner VERSION 1.0 LANGUAGES CXX)
+
+set(USE_COINOR OFF)
+set(USE_GLPK OFF)
+set(USE_HIGHS OFF)
+set(USE_PDLP OFF)
+set(USE_SCIP OFF)
+set(USE_XPRESS OFF)
+set(USE_GUROBI OFF)
+
+
 message(STATUS "${PROJECT_NAME} version: ${PROJECT_VERSION}")
 #message(STATUS "major: ${PROJECT_VERSION_MAJOR}")
 #message(STATUS "minor: ${PROJECT_VERSION_MINOR}")
