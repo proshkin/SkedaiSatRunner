@@ -21,13 +21,9 @@
 #include "absl/log/flags.h"
 #include "absl/log/initialize.h"
 #include "absl/strings/match.h"
-
 #include "absl/strings/str_format.h" // new
-
 #include "absl/strings/string_view.h"
-
 #include "google/protobuf/arena.h"  // new
-
 #include "google/protobuf/text_format.h"
 #include "ortools/base/helpers.h"
 #include "ortools/base/logging.h"
