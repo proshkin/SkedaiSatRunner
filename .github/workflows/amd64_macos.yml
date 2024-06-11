@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         cmake: [
-          # {generator: "Xcode", config: Release, build_target: ALL_BUILD, test_target: RUN_TESTS, install_target: install},
+          {generator: "Xcode", config: Release, build_target: ALL_BUILD, test_target: RUN_TESTS, install_target: install},
           {generator: "Unix Makefiles", config: Release, build_target: all, test_target: test, install_target: install},
         ]
       fail-fast: false
