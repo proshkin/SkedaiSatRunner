@@ -13,7 +13,11 @@ jobs:
         ]
       fail-fast: false
     name: Windows • CMake • ${{ matrix.cmake.generator }}
-    runs-on: windows-latest
+    # runs-on: windows-latest
+    runs-on: windows-2022
+    environment:
+      image: windows-2022
+      version: 20240514.3.0
     steps:
       - uses: actions/checkout@v4
       - name: Check CMake
