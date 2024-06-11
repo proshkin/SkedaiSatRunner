@@ -17,7 +17,7 @@ jobs:
     runs-on: windows-2022
     environment:
       image: windows-2022
-      version: 20240514.3.0
+      url: https://github.com/actions/runner-images/releases/tag/win22%2F20240514.3
     steps:
       - uses: actions/checkout@v4
       - name: Check CMake
