@@ -44,3 +44,8 @@ jobs:
           --config ${{ matrix.cmake.config }}
           --target ${{ matrix.cmake.install_target }}
           -v
+      - name: Upload mod_sat_runner as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SkedaiSatRunner_win0.0.1
+          path: install/bin/SkedaiSatRunner
