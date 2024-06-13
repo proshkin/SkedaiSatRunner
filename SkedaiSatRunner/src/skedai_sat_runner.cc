@@ -38,7 +38,6 @@
 #include "ortools/sat/sat_cnf_reader.h"
 #include "ortools/sat/sat_parameters.pb.h"
 #include "ortools/util/file_util.h"
-
 #include "ortools/sat/cp_model_utils.h"  // new
 
 #include <iostream>
