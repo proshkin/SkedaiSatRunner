@@ -1,0 +1,54 @@
+name: Calculate Version and Trigger Build
+
+on: [push]
+
+jobs:
+  calculate-version:
+    if: "!contains(github.ref, 'refs/tags/')"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Get number of releases
+        id: get_releases
+        run: |
+          releases=$(curl -s -H "Authorization: token ${{ secrets.SKEDAI_ACTION_TOKEN }}" "https://api.github.com/repos/${{ github.repository }}/releases?per_page=100" | jq -r '. | length')
+          releases=$(echo $releases | xargs)
+          echo "releases=$releases" >> $GITHUB_ENV
+
+      - name: Get number of commits
+        id: get_commits
+        run: |
+          commits=$(git rev-list --count HEAD)
+          commits=$(echo $commits | xargs)
+          echo "commits=$commits" >> $GITHUB_ENV
+
+      - name: Set version number
+        id: set_version
+        run: |
+          releases_number=$(( ${{ env.releases }} + 1 ))
+          version="0.${releases_number}.${{ env.commits }}"
+          version=$(echo $version | xargs)
+          echo "version=$version"
+          echo "version=$version" >> $GITHUB_ENV
+
+
+      - name: Create version.txt file
+        run: echo "${{ env.version }}" > version.txt
+
+      - name: Upload version artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: version
+          path: version.txt
+
+      - name: Trigger Build Workflows
+        run: |
+          curl -X POST \
+          -H "Accept: application/vnd.github.v3+json" \
+          -H "Authorization: token ${{ secrets.SKEDAI_ACTION_TOKEN }}" \
+          https://api.github.com/repos/${{ github.repository }}/dispatches \
+          -d '{"event_type":"trigger-satrunner-build"}'
