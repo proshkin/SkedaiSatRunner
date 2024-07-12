@@ -15,4 +15,4 @@ jobs:
           https://api.github.com/repos/${{ github.repository }}/dispatches \
           -d '{"event_type":"trigger-testb"}')
           cat response.txt
-          echo "Response code: $response"
+          echo "Response code: $response" 
