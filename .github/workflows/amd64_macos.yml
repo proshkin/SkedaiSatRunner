@@ -1,7 +1,11 @@
 # ref: https://github.com/actions/runner-images
 name: amd64 MacOS
 
-on: [push, pull_request, workflow_dispatch]
+on:
+  workflow_run:
+    workflows: ["Calculate Version and Trigger Build"]
+    types:
+      - completed
 
 # Building using the github runner environement directly.
 jobs:
@@ -44,8 +48,43 @@ jobs:
           --config ${{ matrix.cmake.config }}
           --target ${{ matrix.cmake.install_target }}
           -v
+      
+      - name: Download artifacts
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs')
+            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.payload.workflow_run.id
+            })
+            const matchArtifact = artifacts.data.artifacts.find(artifact => artifact.name === "version")
+            const download = await github.rest.actions.downloadArtifact({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              artifact_id: matchArtifact.id,
+              archive_format: 'zip'
+            })
+            fs.writeFileSync('version.zip', Buffer.from(download.data))
+      - run: unzip version.zip
+
+      - name: Read version
+        run: |
+          version=$(cat version.txt)
+          echo "version=$version" >> $GITHUB_ENV
+        shell: bash
+      
+      - name: Test-run the executable
+        run: |
+          chmod +x ./install/bin/SkedaiSatRunner
+          ./userServer_mac &
+          sleep 5
+          pkill -f ./install/bin/SkedaiSatRunner
+        shell: bash
+      
       - name: Upload mod_sat_runner as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: SkedaiSatRunner_mac0.0.1
+          name: "SkedaiSatRunner_mac_${{ env.version }}"
           path: install/bin/SkedaiSatRunner
