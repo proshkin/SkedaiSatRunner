@@ -39,17 +39,15 @@ jobs:
         run: echo "${{ env.version }}" > version.txt
 
       - name: Upload version artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: version
           path: version.txt
 
       - name: Trigger Build Workflows
-        id: trigger_build
         run: |
-          response=$(curl -X POST \
+          curl -X POST \
           -H "Accept: application/vnd.github.v3+json" \
           -H "Authorization: token ${{ secrets.SKEDAI_ACTION_TOKEN }}" \
           https://api.github.com/repos/${{ github.repository }}/dispatches \
-          -d '{"event_type":"trigger-satrunner-build"}')
-          echo "Response: $response"
+          -d '{"event_type":"trigger-satrunner-build"}'
