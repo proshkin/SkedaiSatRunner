@@ -2,10 +2,8 @@
 name: amd64 MacOS
 
 on:
-  workflow_run:
-    workflows: ["Calculate Version and Trigger Build"]
-    types:
-      - completed
+  repository_dispatch:
+    types: [trigger-satrunner-build]
 
 # Building using the github runner environement directly.
 jobs:
