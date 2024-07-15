@@ -77,12 +77,13 @@ jobs:
       - name: Test-run the executable
         run: |
           chmod +x ./install/bin/SkedaiSatRunner
-          ./install/bin/SkedaiSatRunner --input=somefile 2>&1 | tee output.log | ( ! grep "INVALID_ARGUMENT: Could not open" )
-          if [ $? -ne 0 ]; then
+          ./install/bin/SkedaiSatRunner --input=somefile 2>&1 | tee output.log || true
+          if grep -q "INVALID_ARGUMENT: Could not open 'somefile'" output.log; then
+            echo "Executable ran but failed due to missing input file. Considering it as successful."
+            exit 0
+          else
             echo "Executable did not run as expected."
             exit 1
-          else
-            echo "Executable ran successfully."
           fi
         shell: bash
 
