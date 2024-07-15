@@ -77,9 +77,13 @@ jobs:
       - name: Test-run the executable
         run: |
           chmod +x ./install/bin/SkedaiSatRunner
-          ./install/bin/SkedaiSatRunner &
-          sleep 5
-          pkill -f ./install/bin/SkedaiSatRunner
+          ./install/bin/SkedaiSatRunner --input=somefile | tee output.log || true
+          if grep -q "Please supply a data file with --input=" output.log; then
+            echo "Executable ran successfully."
+          else
+            echo "Executable did not run as expected." >&2
+            exit 1
+          fi
         shell: bash
       
       - name: Upload mod_sat_runner as artifact
