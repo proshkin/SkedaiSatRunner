@@ -77,15 +77,15 @@ jobs:
       - name: Test-run the executable
         run: |
           chmod +x ./install/bin/SkedaiSatRunner
-          ./install/bin/SkedaiSatRunner --input=somefile | tee output.log || true
-          if grep -q -E "please supply a data file with --input=|Check failed: ReadFileToProto" output.log; then
-            echo "Executable ran successfully."
-            exit 0
-          else
-            echo "Executable did not run as expected." >&2
+          ./install/bin/SkedaiSatRunner --input=somefile 2>&1 | tee output.log | ( ! grep "INVALID_ARGUMENT: Could not open" )
+          if [ $? -ne 0 ]; then
+            echo "Executable did not run as expected."
             exit 1
+          else
+            echo "Executable ran successfully."
           fi
         shell: bash
+
 
       - name: Upload mod_sat_runner as artifact
         uses: actions/upload-artifact@v4
