@@ -80,6 +80,7 @@ jobs:
           ./install/bin/SkedaiSatRunner --input=somefile | tee output.log || true
           if grep -q -E "please supply a data file with --input=|Check failed: ReadFileToProto" output.log; then
             echo "Executable ran successfully."
+            exit 0
           else
             echo "Executable did not run as expected." >&2
             exit 1
