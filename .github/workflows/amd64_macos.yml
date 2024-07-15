@@ -17,7 +17,6 @@ jobs:
       fail-fast: false
     name: MacOS • CMake • ${{ matrix.cmake.generator }}
     runs-on: macos-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - uses: actions/checkout@v4
       - name: Check CMake
