@@ -11,7 +11,6 @@ jobs:
     strategy:
       matrix:
         cmake: [
-          # {generator: "Xcode", config: Release, build_target: ALL_BUILD, test_target: RUN_TESTS, install_target: install},
           {generator: "Unix Makefiles", config: Release, build_target: all, test_target: test, install_target: install},
         ]
       fail-fast: false
@@ -22,49 +21,37 @@ jobs:
       - name: Check CMake
         run: cmake --version
       - name: Configure
-        run: >
-          cmake -S. -Bbuild
-          -G "${{ matrix.cmake.generator }}"
-          -DCMAKE_BUILD_TYPE=${{ matrix.cmake.config }}
+        run: |
+          cmake -S. -Bbuild \
+          -G "${{ matrix.cmake.generator }}" \
+          -DCMAKE_BUILD_TYPE=${{ matrix.cmake.config }} \
           -DCMAKE_INSTALL_PREFIX=install
       - name: Build
-        run: >
-          cmake --build build
-          --config ${{ matrix.cmake.config }}
-          --target ${{ matrix.cmake.build_target }}
+        run: |
+          cmake --build build \
+          --config ${{ matrix.cmake.config }} \
+          --target ${{ matrix.cmake.build_target }} \
           -v -j2
       - name: Test
-        run: >
-          CTEST_OUTPUT_ON_FAILURE=1
-          cmake --build build
-          --config ${{ matrix.cmake.config }}
-          --target ${{ matrix.cmake.test_target }}
+        run: |
+          CTEST_OUTPUT_ON_FAILURE=1 \
+          cmake --build build \
+          --config ${{ matrix.cmake.config }} \
+          --target ${{ matrix.cmake.test_target }} \
           -v
       - name: Install
-        run: >
-          cmake --build build
-          --config ${{ matrix.cmake.config }}
-          --target ${{ matrix.cmake.install_target }}
+        run: |
+          cmake --build build \
+          --config ${{ matrix.cmake.config }} \
+          --target ${{ matrix.cmake.install_target }} \
           -v
       
       - name: Download artifacts
-        uses: actions/github-script@v6
+        uses: actions/download-artifact@v2
         with:
-          script: |
-            const fs = require('fs')
-            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              run_id: context.payload.workflow_run.id
-            })
-            const matchArtifact = artifacts.data.artifacts.find(artifact => artifact.name === "version")
-            const download = await github.rest.actions.downloadArtifact({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              artifact_id: matchArtifact.id,
-              archive_format: 'zip'
-            })
-            fs.writeFileSync('version.zip', Buffer.from(download.data))
+          name: version
+          path: .
+
       - run: unzip version.zip
 
       - name: Read version
@@ -76,7 +63,7 @@ jobs:
       - name: Test-run the executable
         run: |
           chmod +x ./install/bin/SkedaiSatRunner
-          ./userServer_mac &
+          ./install/bin/SkedaiSatRunner &
           sleep 5
           pkill -f ./install/bin/SkedaiSatRunner
         shell: bash
