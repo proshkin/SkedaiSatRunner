@@ -78,14 +78,14 @@ jobs:
         run: |
           chmod +x ./install/bin/SkedaiSatRunner
           ./install/bin/SkedaiSatRunner --input=somefile | tee output.log || true
-          if grep -q "Please supply a data file with --input=" output.log; then
+          if grep -q -E "please supply a data file with --input=|Check failed: ReadFileToProto" output.log; then
             echo "Executable ran successfully."
           else
             echo "Executable did not run as expected." >&2
             exit 1
           fi
         shell: bash
-      
+
       - name: Upload mod_sat_runner as artifact
         uses: actions/upload-artifact@v4
         with:
