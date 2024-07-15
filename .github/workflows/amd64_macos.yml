@@ -2,8 +2,10 @@
 name: amd64 MacOS
 
 on:
-  repository_dispatch:
-    types: [trigger-satrunner-build]
+  workflow_run:
+    workflows: ["Calculate Version and Trigger Build"]
+    types:
+      - completed
 
 # Building using the github runner environement directly.
 jobs:
@@ -47,11 +49,23 @@ jobs:
           -v
       
       - name: Download artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/github-script@v6
         with:
-          name: version
-          path: .
-
+          script: |
+            const fs = require('fs')
+            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.payload.workflow_run.id
+            })
+            const matchArtifact = artifacts.data.artifacts.find(artifact => artifact.name === "version")
+            const download = await github.rest.actions.downloadArtifact({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              artifact_id: matchArtifact.id,
+              archive_format: 'zip'
+            })
+            fs.writeFileSync('version.zip', Buffer.from(download.data))
       - run: unzip version.zip
 
       - name: Read version
