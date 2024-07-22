@@ -91,5 +91,5 @@ jobs:
       - name: Upload mod_sat_runner as artifact
         uses: actions/upload-artifact@v4
         with:
-          name: "SkedaiSatRunner_mac_${{ env.version }}"
+          name: "skedaiSatRunner_mac_${{ env.version }}"
           path: install/bin/SkedaiSatRunner
